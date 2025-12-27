@@ -5,8 +5,6 @@ interface Props {
   date: string;
   description?: string;
   image?: string;
-  headings?: { depth: number; slug: string; text: string }[];
-  readingTime?: number;
   prevPost?: { number: number; title: string } | null;
   nextPost?: { number: number; title: string } | null;
 }
@@ -15,8 +13,6 @@ import BaseLayout from './BaseLayout.astro';
 import Sidebar from '@components/Sidebar.astro';
 import Masthead from '@components/Masthead.astro';
 import ReadingProgress from '@components/ReadingProgress.astro';
-import TOC from '@components/TOC.astro';
-import FontSizer from '@components/FontSizer.astro';
 import KeyboardNav from '@components/KeyboardNav.astro';
 import ImageZoom from '@components/ImageZoom.astro';
 
@@ -26,8 +22,6 @@ const {
   date,
   description,
   image,
-  headings = [],
-  readingTime = 0,
   prevPost,
   nextPost,
 } = Astro.props;
@@ -50,43 +44,41 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
 
     <!-- 主内容区 -->
     <main class="main">
-      <Masthead
-        title={title}
-        issueNumber={issueNumber}
-        date={date}
-        readingTime={readingTime}
-      />
+      <div class="main-inner">
+        <Masthead title={title} issueNumber={issueNumber} date={date} />
 
-      <article class="content prose">
-        <slot />
-      </article>
+        <article class="content prose">
+          <slot />
+        </article>
 
-      <!-- 上下篇导航 -->
-      {(prevPost || nextPost) && (
-        <nav class="post-nav">
-          {prevPost ? (
-            <a href={`/posts/${prevPost.number}`} class="post-nav-link prev">
-              <span class="post-nav-label">← 上一期</span>
-              <span class="post-nav-title">第{prevPost.number}期 - {prevPost.title}</span>
-            </a>
-          ) : <div />}
-          {nextPost ? (
-            <a href={`/posts/${nextPost.number}`} class="post-nav-link next">
-              <span class="post-nav-label">下一期 →</span>
-              <span class="post-nav-title">第{nextPost.number}期 - {nextPost.title}</span>
-            </a>
-          ) : <div />}
-        </nav>
-      )}
-    </main>
+        <!-- 上下篇导航 -->
+        {(prevPost || nextPost) && (
+          <nav class="post-nav">
+            <div class="post-nav-inner">
+              {prevPost ? (
+                <a href={`/posts/${prevPost.number}`} class="post-nav-link prev">
+                  <span class="post-nav-arrow">←</span>
+                  <div class="post-nav-content">
+                    <span class="post-nav-label">上一期</span>
+                    <span class="post-nav-title">{prevPost.title}</span>
+                  </div>
+                </a>
+              ) : <div class="post-nav-placeholder" />}
 
-    <!-- 右侧目录 -->
-    <aside class="toc-sidebar">
-      <div class="toc-toolbar">
-        <FontSizer />
+              {nextPost ? (
+                <a href={`/posts/${nextPost.number}`} class="post-nav-link next">
+                  <div class="post-nav-content">
+                    <span class="post-nav-label">下一期</span>
+                    <span class="post-nav-title">{nextPost.title}</span>
+                  </div>
+                  <span class="post-nav-arrow">→</span>
+                </a>
+              ) : <div class="post-nav-placeholder" />}
+            </div>
+          </nav>
+        )}
       </div>
-      <TOC headings={headings} />
-    </aside>
+    </main>
   </div>
 </BaseLayout>
 
@@ -111,8 +103,13 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
   .main {
     flex: 1;
     margin-left: var(--sidebar-width);
-    margin-right: 220px;
+    display: flex;
+    justify-content: center;
     padding: var(--spacing-page);
+  }
+
+  .main-inner {
+    width: 100%;
     max-width: var(--content-max-width);
   }
 
@@ -120,76 +117,76 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
     margin-top: 2rem;
   }
 
-  .toc-sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 220px;
-    height: 100vh;
-    padding-top: 24px;
-    border-left: 1px solid var(--border);
-    background: var(--bg);
-  }
-
-  .toc-toolbar {
-    padding: 0 16px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
   /* 上下篇导航 */
   .post-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 48px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .post-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .post-nav-placeholder {
+    /* 占位，保持布局 */
   }
 
   .post-nav-link {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px 16px;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
     text-decoration: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    transition: all 0.15s ease;
-    max-width: 45%;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    transition: all 0.2s ease;
   }
 
   .post-nav-link:hover {
-    border-color: var(--accent);
-    background: rgba(196, 30, 58, 0.02);
+    background: var(--bg);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
 
   .post-nav-link.next {
+    justify-content: flex-end;
     text-align: right;
-    margin-left: auto;
+  }
+
+  .post-nav-arrow {
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 300;
+    flex-shrink: 0;
+  }
+
+  .post-nav-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
   }
 
   .post-nav-label {
     font-size: 0.8rem;
     color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .post-nav-title {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--text);
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* 响应式 */
-  @media (max-width: 1200px) {
-    .toc-sidebar {
-      display: none;
-    }
-
-    .main {
-      margin-right: 0;
-    }
-  }
-
   @media (max-width: 768px) {
     .sidebar {
       display: none;
@@ -201,15 +198,23 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
     }
 
     .post-nav {
-      flex-direction: column;
+      margin-top: 48px;
+      padding-top: 24px;
+    }
+
+    .post-nav-inner {
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
 
     .post-nav-link {
-      max-width: 100%;
+      padding: 16px 20px;
     }
 
     .post-nav-link.next {
+      justify-content: flex-start;
       text-align: left;
+      flex-direction: row-reverse;
     }
   }
 </style>
