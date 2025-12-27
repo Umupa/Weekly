@@ -3,9 +3,10 @@ interface Props {
   title: string;
   issueNumber: number;
   date: string;
+  readingTime?: number;
 }
 
-const { title, issueNumber, date } = Astro.props;
+const { title, issueNumber, date, readingTime } = Astro.props;
 
 // 格式化日期
 const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
@@ -19,6 +20,9 @@ const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
   <div class="masthead-top">
     <span class="issue-badge">第 {issueNumber} 期</span>
     <time class="date" datetime={date}>{formattedDate}</time>
+    {readingTime && readingTime > 0 && (
+      <span class="reading-time">· 约 {readingTime} 分钟阅读</span>
+    )}
   </div>
 
   <h1 class="title">{title}</h1>
@@ -36,6 +40,7 @@ const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
+    flex-wrap: wrap;
   }
 
   .issue-badge {
@@ -49,6 +54,11 @@ const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
   }
 
   .date {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .reading-time {
     color: var(--text-secondary);
     font-size: 0.9rem;
   }

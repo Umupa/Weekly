@@ -1,0 +1,41 @@
+---
+/**
+ * KeyboardNav - 键盘导航
+ * ← → 切换上/下一期
+ */
+
+interface Props {
+  prevUrl?: string;
+  nextUrl?: string;
+}
+
+const { prevUrl, nextUrl } = Astro.props;
+---
+
+<div
+  id="keyboard-nav"
+  data-prev={prevUrl || ''}
+  data-next={nextUrl || ''}
+  style="display: none;"
+></div>
+
+<script>
+  const nav = document.getElementById('keyboard-nav');
+  if (nav) {
+    const prevUrl = nav.dataset.prev;
+    const nextUrl = nav.dataset.next;
+
+    document.addEventListener('keydown', (e) => {
+      // 忽略输入框内的按键
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' && prevUrl) {
+        window.location.href = prevUrl;
+      } else if (e.key === 'ArrowRight' && nextUrl) {
+        window.location.href = nextUrl;
+      }
+    });
+  }
+</script>

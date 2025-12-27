@@ -5,31 +5,88 @@ interface Props {
   date: string;
   description?: string;
   image?: string;
+  headings?: { depth: number; slug: string; text: string }[];
+  readingTime?: number;
+  prevPost?: { number: number; title: string } | null;
+  nextPost?: { number: number; title: string } | null;
 }
 
 import BaseLayout from './BaseLayout.astro';
 import Sidebar from '@components/Sidebar.astro';
 import Masthead from '@components/Masthead.astro';
+import ReadingProgress from '@components/ReadingProgress.astro';
+import TOC from '@components/TOC.astro';
+import FontSizer from '@components/FontSizer.astro';
+import KeyboardNav from '@components/KeyboardNav.astro';
+import ImageZoom from '@components/ImageZoom.astro';
 
-const { title, issueNumber, date, description, image } = Astro.props;
+const {
+  title,
+  issueNumber,
+  date,
+  description,
+  image,
+  headings = [],
+  readingTime = 0,
+  prevPost,
+  nextPost,
+} = Astro.props;
+
 const pageTitle = `第 ${issueNumber} 期 - ${title} | 赛博周刊`;
+const prevUrl = prevPost ? `/posts/${prevPost.number}` : undefined;
+const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
 ---
 
 <BaseLayout title={pageTitle} description={description} image={image}>
+  <ReadingProgress />
+  <KeyboardNav prevUrl={prevUrl} nextUrl={nextUrl} />
+  <ImageZoom />
+
   <div class="layout">
-    <!-- 侧边栏 -->
+    <!-- 左侧边栏 -->
     <aside class="sidebar">
       <Sidebar currentIssue={issueNumber} />
     </aside>
 
     <!-- 主内容区 -->
     <main class="main">
-      <Masthead title={title} issueNumber={issueNumber} date={date} />
+      <Masthead
+        title={title}
+        issueNumber={issueNumber}
+        date={date}
+        readingTime={readingTime}
+      />
 
       <article class="content prose">
         <slot />
       </article>
+
+      <!-- 上下篇导航 -->
+      {(prevPost || nextPost) && (
+        <nav class="post-nav">
+          {prevPost ? (
+            <a href={`/posts/${prevPost.number}`} class="post-nav-link prev">
+              <span class="post-nav-label">← 上一期</span>
+              <span class="post-nav-title">第{prevPost.number}期 - {prevPost.title}</span>
+            </a>
+          ) : <div />}
+          {nextPost ? (
+            <a href={`/posts/${nextPost.number}`} class="post-nav-link next">
+              <span class="post-nav-label">下一期 →</span>
+              <span class="post-nav-title">第{nextPost.number}期 - {nextPost.title}</span>
+            </a>
+          ) : <div />}
+        </nav>
+      )}
     </main>
+
+    <!-- 右侧目录 -->
+    <aside class="toc-sidebar">
+      <div class="toc-toolbar">
+        <FontSizer />
+      </div>
+      <TOC headings={headings} />
+    </aside>
   </div>
 </BaseLayout>
 
@@ -54,15 +111,85 @@ const pageTitle = `第 ${issueNumber} 期 - ${title} | 赛博周刊`;
   .main {
     flex: 1;
     margin-left: var(--sidebar-width);
+    margin-right: 220px;
     padding: var(--spacing-page);
-    max-width: calc(var(--content-max-width) + var(--spacing-page) * 2);
+    max-width: var(--content-max-width);
   }
 
   .content {
     margin-top: 2rem;
   }
 
-  /* 移动端适配 */
+  .toc-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 220px;
+    height: 100vh;
+    padding-top: 24px;
+    border-left: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .toc-toolbar {
+    padding: 0 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* 上下篇导航 */
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .post-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    max-width: 45%;
+  }
+
+  .post-nav-link:hover {
+    border-color: var(--accent);
+    background: rgba(196, 30, 58, 0.02);
+  }
+
+  .post-nav-link.next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .post-nav-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .post-nav-title {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* 响应式 */
+  @media (max-width: 1200px) {
+    .toc-sidebar {
+      display: none;
+    }
+
+    .main {
+      margin-right: 0;
+    }
+  }
+
   @media (max-width: 768px) {
     .sidebar {
       display: none;
@@ -71,6 +198,18 @@ const pageTitle = `第 ${issueNumber} 期 - ${title} | 赛博周刊`;
     .main {
       margin-left: 0;
       padding: 16px;
+    }
+
+    .post-nav {
+      flex-direction: column;
+    }
+
+    .post-nav-link {
+      max-width: 100%;
+    }
+
+    .post-nav-link.next {
+      text-align: left;
     }
   }
 </style>

@@ -1,0 +1,95 @@
+---
+/**
+ * FontSizer - 字体大小调节
+ * 三档可调：小/中/大
+ */
+---
+
+<div class="font-sizer">
+  <button
+    type="button"
+    class="font-btn"
+    id="font-decrease"
+    aria-label="减小字号"
+    title="减小字号"
+  >
+    A-
+  </button>
+  <button
+    type="button"
+    class="font-btn"
+    id="font-increase"
+    aria-label="增大字号"
+    title="增大字号"
+  >
+    A+
+  </button>
+</div>
+
+<style>
+  .font-sizer {
+    display: flex;
+    gap: 4px;
+  }
+
+  .font-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.15s ease;
+  }
+
+  .font-btn:hover {
+    color: var(--text);
+    border-color: var(--text-secondary);
+  }
+
+  .font-btn:active {
+    transform: scale(0.95);
+  }
+</style>
+
+<script>
+  const FONT_SIZES = [15, 17, 19] as const;
+  const STORAGE_KEY = 'font-size-index';
+
+  function getStoredIndex(): number {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? parseInt(stored, 10) : 1; // 默认中等
+  }
+
+  function setFontSize(index: number) {
+    const size = FONT_SIZES[index];
+    document.documentElement.style.setProperty('--text-base', `${size}px`);
+    localStorage.setItem(STORAGE_KEY, String(index));
+  }
+
+  // 初始化
+  let currentIndex = getStoredIndex();
+  setFontSize(currentIndex);
+
+  // 绑定按钮
+  document.getElementById('font-decrease')?.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      setFontSize(currentIndex);
+    }
+  });
+
+  document.getElementById('font-increase')?.addEventListener('click', () => {
+    if (currentIndex < FONT_SIZES.length - 1) {
+      currentIndex++;
+      setFontSize(currentIndex);
+    }
+  });
+</script>

@@ -1,0 +1,55 @@
+---
+/**
+ * ReadingProgress - 阅读进度条
+ * 显示在页面顶部，随滚动更新
+ */
+---
+
+<div class="reading-progress" id="reading-progress">
+  <div class="reading-progress-bar" id="reading-progress-bar"></div>
+</div>
+
+<style>
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--border);
+    z-index: 100;
+  }
+
+  .reading-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.1s ease-out;
+  }
+</style>
+
+<script>
+  function updateProgress() {
+    const article = document.querySelector('article');
+    if (!article) return;
+
+    const articleTop = article.offsetTop;
+    const articleHeight = article.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const scrollTop = window.scrollY;
+
+    // 计算进度：从文章开始到文章结束
+    const start = articleTop;
+    const end = articleTop + articleHeight - windowHeight;
+    const progress = Math.min(Math.max((scrollTop - start) / (end - start), 0), 1);
+
+    const bar = document.getElementById('reading-progress-bar');
+    if (bar) {
+      bar.style.width = `${progress * 100}%`;
+    }
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress, { passive: true });
+  updateProgress();
+</script>

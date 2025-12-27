@@ -1,0 +1,83 @@
+---
+/**
+ * ImageZoom - 图片点击放大
+ * 点击图片后全屏查看，ESC 或点击关闭
+ */
+---
+
+<div id="image-zoom-overlay" class="zoom-overlay" style="display: none;">
+  <img id="image-zoom-img" class="zoom-img" src="" alt="" />
+</div>
+
+<style>
+  .zoom-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    cursor: zoom-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .zoom-overlay.active {
+    opacity: 1;
+  }
+
+  .zoom-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    transform: scale(0.95);
+    transition: transform 0.2s ease;
+  }
+
+  .zoom-overlay.active .zoom-img {
+    transform: scale(1);
+  }
+</style>
+
+<script>
+  const overlay = document.getElementById('image-zoom-overlay');
+  const zoomImg = document.getElementById('image-zoom-img') as HTMLImageElement;
+
+  if (overlay && zoomImg) {
+    // 点击文章内图片放大
+    document.querySelectorAll('.prose img').forEach((img) => {
+      (img as HTMLElement).style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        const src = (img as HTMLImageElement).src;
+        const alt = (img as HTMLImageElement).alt;
+        zoomImg.src = src;
+        zoomImg.alt = alt;
+        overlay.style.display = 'flex';
+        requestAnimationFrame(() => {
+          overlay.classList.add('active');
+        });
+      });
+    });
+
+    // 点击遮罩关闭
+    overlay.addEventListener('click', closeZoom);
+
+    // ESC 关闭
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.style.display !== 'none') {
+        closeZoom();
+      }
+    });
+
+    function closeZoom() {
+      overlay.classList.remove('active');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        zoomImg.src = '';
+      }, 200);
+    }
+  }
+</script>

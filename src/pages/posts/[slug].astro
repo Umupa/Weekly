@@ -1,24 +1,41 @@
 ---
 import PostLayout from '@layouts/PostLayout.astro';
 import { render } from 'astro:content';
-import { getAllPosts, getIssueNumber } from '@/lib/posts';
+import { getAllPosts, getIssueNumber, getReadingTime } from '@/lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
 
-  return posts.map((post) => {
+  return posts.map((post, index) => {
     const issueNumber = getIssueNumber(post.id);
+
+    // 上一篇（更新的）和下一篇（更旧的）
+    const prevPost = index > 0 ? posts[index - 1] : null;
+    const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
+
     return {
       params: { slug: String(issueNumber) },
-      props: { post, issueNumber },
+      props: {
+        post,
+        issueNumber,
+        prevPost: prevPost
+          ? { number: getIssueNumber(prevPost.id), title: prevPost.data.title }
+          : null,
+        nextPost: nextPost
+          ? { number: getIssueNumber(nextPost.id), title: nextPost.data.title }
+          : null,
+      },
     };
   });
 }
 
-const { post, issueNumber } = Astro.props;
-const { Content } = await render(post);
+const { post, issueNumber, prevPost, nextPost } = Astro.props;
+const { Content, headings } = await render(post);
 
 const { title, date, description, image } = post.data;
+
+// 计算阅读时间（从原始内容）
+const readingTime = post.body ? getReadingTime(post.body) : 0;
 ---
 
 <PostLayout
@@ -27,6 +44,10 @@ const { title, date, description, image } = post.data;
   date={date.toISOString().split('T')[0]}
   description={description}
   image={image}
+  headings={headings}
+  readingTime={readingTime}
+  prevPost={prevPost}
+  nextPost={nextPost}
 >
   <Content />
 </PostLayout>
