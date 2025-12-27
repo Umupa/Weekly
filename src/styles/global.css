@@ -1,0 +1,10 @@
+/* Global styles */
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'LXGW WenKai', 'Source Han Serif SC', 'Noto Serif SC', serif;
+  line-height: 1.85;
+  letter-spacing: 0.03em;
+}
