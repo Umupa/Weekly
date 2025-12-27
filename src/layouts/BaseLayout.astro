@@ -1,5 +1,6 @@
 ---
 import '@styles/typography.css';
+import '@styles/themes.css';
 
 interface Props {
   title?: string;
@@ -22,6 +23,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Theme initialization (prevent flash) -->
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', stored || system);
+      })();
+    </script>
 
     <!-- SEO -->
     <title>{title}</title>
@@ -51,19 +61,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen bg-[--bg] text-[--text] font-kai transition-colors duration-200">
+  <body class="min-h-screen bg-[--bg] text-[--text] font-kai">
     <slot />
   </body>
 </html>
 
 <style is:global>
   :root {
-    --bg: #ffffff;
-    --text: #1a1a1a;
-    --text-secondary: #666666;
-    --border: #e5e5e5;
-    --accent: #c41e3a;
-
     --sidebar-width: 280px;
     --content-max-width: 720px;
     --spacing-page: 24px;

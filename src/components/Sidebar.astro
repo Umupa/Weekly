@@ -1,4 +1,6 @@
 ---
+import ThemeSwitch from './ThemeSwitch.astro';
+
 interface Props {
   currentIssue?: number;
 }
@@ -36,6 +38,10 @@ const issues = [
       </a>
     ))}
   </div>
+
+  <footer class="sidebar-footer">
+    <ThemeSwitch />
+  </footer>
 </nav>
 
 <style>
@@ -86,7 +92,7 @@ const issues = [
 
   .nav-item:hover {
     color: var(--text);
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--bg-secondary);
   }
 
   .nav-item.active {
@@ -101,5 +107,10 @@ const issues = [
 
   .issue-title {
     opacity: 0.8;
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
   }
 </style>

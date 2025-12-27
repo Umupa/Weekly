@@ -1,0 +1,141 @@
+/* ==========================================================================
+   Theme System - 赛博周刊主题系统
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Light Theme (Default) - 亮色主题
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme='light'] {
+  --bg: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --text: #1a1a1a;
+  --text-secondary: #666666;
+  --border: #e5e5e5;
+  --accent: #c41e3a;
+  --accent-hover: #a31830;
+
+  --code-bg: #f5f5f5;
+  --code-text: #1a1a1a;
+  --pre-bg: #1a1a1a;
+  --pre-text: #e5e5e5;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   Dark Theme - 暗色主题
+   -------------------------------------------------------------------------- */
+[data-theme='dark'] {
+  --bg: #1a1a1a;
+  --bg-secondary: #242424;
+  --text: #e5e5e5;
+  --text-secondary: #999999;
+  --border: #333333;
+  --accent: #e85d75;
+  --accent-hover: #f07a8f;
+
+  --code-bg: #2a2a2a;
+  --code-text: #e5e5e5;
+  --pre-bg: #0d0d0d;
+  --pre-text: #e5e5e5;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Paper Theme - 纸张色主题（护眼）
+   -------------------------------------------------------------------------- */
+[data-theme='paper'] {
+  --bg: #faf6eb;
+  --bg-secondary: #f5f0e3;
+  --text: #2c2416;
+  --text-secondary: #6b5d4d;
+  --border: #d4c5a9;
+  --accent: #8b4513;
+  --accent-hover: #6d360f;
+
+  --code-bg: #f0ebe0;
+  --code-text: #2c2416;
+  --pre-bg: #2c2416;
+  --pre-text: #f5f0e3;
+
+  --shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.08);
+  --shadow-md: 0 4px 12px rgba(44, 36, 22, 0.1);
+  --shadow-lg: 0 8px 24px rgba(44, 36, 22, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   Theme Transitions - 主题切换过渡
+   -------------------------------------------------------------------------- */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar,
+.main,
+.masthead,
+.nav-item,
+.hero-btn,
+.prose pre,
+.prose code,
+.prose blockquote {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Theme-aware Overrides - 主题感知样式覆盖
+   -------------------------------------------------------------------------- */
+
+/* 代码块 */
+.prose code {
+  background: var(--code-bg);
+  color: var(--code-text);
+}
+
+.prose pre {
+  background: var(--pre-bg);
+}
+
+.prose pre code {
+  background: none;
+  color: var(--pre-text);
+}
+
+/* 引用块 */
+.prose blockquote {
+  background: var(--bg-secondary);
+}
+
+/* 表格 */
+.prose th {
+  background: var(--bg-secondary);
+}
+
+/* 图片阴影 */
+.prose img {
+  box-shadow: var(--shadow-md);
+}
+
+/* 侧边栏 */
+.sidebar {
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+.nav-item:hover {
+  background: var(--bg-secondary);
+}
+
+/* 暗色主题下降低图片亮度 */
+[data-theme='dark'] .prose img {
+  filter: brightness(0.9);
+}
+
+[data-theme='dark'] .prose img:hover {
+  filter: brightness(1);
+}
