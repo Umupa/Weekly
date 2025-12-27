@@ -1,0 +1,31 @@
+---
+import PostLayout from '@layouts/PostLayout.astro';
+import { getAllPosts, getIssueNumber } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+
+  return posts.map((post) => {
+    const issueNumber = getIssueNumber(post.id);
+    return {
+      params: { slug: String(issueNumber) },
+      props: { post, issueNumber },
+    };
+  });
+}
+
+const { post, issueNumber } = Astro.props;
+const { Content } = await post.render();
+
+const { title, date, description, image } = post.data;
+---
+
+<PostLayout
+  title={title}
+  issueNumber={issueNumber}
+  date={date.toISOString().split('T')[0]}
+  description={description}
+  image={image}
+>
+  <Content />
+</PostLayout>

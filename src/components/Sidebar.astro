@@ -1,5 +1,6 @@
 ---
 import ThemeSwitch from './ThemeSwitch.astro';
+import { getAllPosts, getIssueNumber } from '@/lib/posts';
 
 interface Props {
   currentIssue?: number;
@@ -7,12 +8,12 @@ interface Props {
 
 const { currentIssue } = Astro.props;
 
-// 模拟期刊列表（后续会从 content collection 获取）
-const issues = [
-  { number: 3, title: '春日漫步' },
-  { number: 2, title: '城市光影' },
-  { number: 1, title: '创刊号' },
-];
+// 从 content collection 获取期刊列表
+const posts = await getAllPosts();
+const issues = posts.map((post) => ({
+  number: getIssueNumber(post.id),
+  title: post.data.title,
+}));
 ---
 
 <nav class="sidebar-nav">
