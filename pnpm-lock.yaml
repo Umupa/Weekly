@@ -21,6 +21,9 @@ importers:
       '@unocss/preset-uno':
         specifier: ^0.65.3
         version: 0.65.4
+      '@unocss/reset':
+        specifier: ^66.5.11
+        version: 66.5.11
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -786,6 +789,9 @@ packages:
 
   '@unocss/reset@0.65.4':
     resolution: {integrity: sha512-m685H0KFvVMz6R2i5GDIFv4RS9Z7y2G8hJK7xg2OWli+7w8l2ZMihYvXKofPsst4q/ms8EgKXpWc/qqUOTucvA==}
+
+  '@unocss/reset@66.5.11':
+    resolution: {integrity: sha512-Q7HudqDXj+IG2nUpUPKb70xwKqbyO6Lkf9igyXQ2XUypnqN9WZYm8leEnweBKiBuROrY1E8c+CqnS8bO/vUTNw==}
 
   '@unocss/rule-utils@0.65.4':
     resolution: {integrity: sha512-+EzdJEWcqGcO6HwbBTe7vEdBRpuKkBiz4MycQeLD6GEio04T45y6VHHO7/WTqxltbO4YwwW9/s2TKRMxKtoG8g==}
@@ -2616,6 +2622,8 @@ snapshots:
       '@unocss/rule-utils': 0.65.4
 
   '@unocss/reset@0.65.4': {}
+
+  '@unocss/reset@66.5.11': {}
 
   '@unocss/rule-utils@0.65.4':
     dependencies:
