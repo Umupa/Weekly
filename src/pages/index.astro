@@ -1,18 +1,119 @@
 ---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Sidebar from '@components/Sidebar.astro';
+
+// 模拟最新期刊数据（后续从 content collection 获取）
+const latestIssue = {
+  number: 3,
+  title: '春日漫步',
+  date: '2024-03-15',
+  description: '记录春天里的美好瞬间',
+};
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>赛博周刊</title>
-  </head>
-  <body class="min-h-screen bg-white text-gray-900">
-    <main class="max-w-4xl mx-auto py-20 px-4">
-      <h1 class="text-4xl font-bold text-center mb-4">赛博周刊</h1>
-      <p class="text-center text-gray-600">项目初始化成功 ✓</p>
-      <p class="text-center text-gray-400 mt-2">Astro + UnoCSS</p>
+<BaseLayout title="赛博周刊 - 记录每周值得分享的内容">
+  <div class="layout">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <Sidebar currentIssue={latestIssue.number} />
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main">
+      <div class="hero">
+        <p class="hero-label">最新一期</p>
+        <h1 class="hero-title">第 {latestIssue.number} 期 - {latestIssue.title}</h1>
+        <p class="hero-desc">{latestIssue.description}</p>
+        <a href={`/posts/${latestIssue.number}`} class="hero-btn">
+          开始阅读 →
+        </a>
+      </div>
     </main>
-  </body>
-</html>
+  </div>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-page);
+  }
+
+  .hero {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .hero-label {
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 16px;
+  }
+
+  .hero-desc {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+  }
+
+  .hero-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: opacity 0.15s ease;
+  }
+
+  .hero-btn:hover {
+    opacity: 0.9;
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 768px) {
+    .sidebar {
+      display: none;
+    }
+
+    .main {
+      margin-left: 0;
+      padding: 16px;
+    }
+
+    .hero-title {
+      font-size: 1.75rem;
+    }
+  }
+</style>

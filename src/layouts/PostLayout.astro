@@ -1,0 +1,76 @@
+---
+interface Props {
+  title: string;
+  issueNumber: number;
+  date: string;
+  description?: string;
+  image?: string;
+}
+
+import BaseLayout from './BaseLayout.astro';
+import Sidebar from '@components/Sidebar.astro';
+import Masthead from '@components/Masthead.astro';
+
+const { title, issueNumber, date, description, image } = Astro.props;
+const pageTitle = `第 ${issueNumber} 期 - ${title} | 赛博周刊`;
+---
+
+<BaseLayout title={pageTitle} description={description} image={image}>
+  <div class="layout">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <Sidebar currentIssue={issueNumber} />
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main">
+      <Masthead title={title} issueNumber={issueNumber} date={date} />
+
+      <article class="content prose">
+        <slot />
+      </article>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: var(--spacing-page);
+    max-width: calc(var(--content-max-width) + var(--spacing-page) * 2);
+  }
+
+  .content {
+    margin-top: 2rem;
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 768px) {
+    .sidebar {
+      display: none;
+    }
+
+    .main {
+      margin-left: 0;
+      padding: 16px;
+    }
+  }
+</style>

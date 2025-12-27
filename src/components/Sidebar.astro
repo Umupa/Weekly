@@ -1,0 +1,105 @@
+---
+interface Props {
+  currentIssue?: number;
+}
+
+const { currentIssue } = Astro.props;
+
+// 模拟期刊列表（后续会从 content collection 获取）
+const issues = [
+  { number: 3, title: '春日漫步' },
+  { number: 2, title: '城市光影' },
+  { number: 1, title: '创刊号' },
+];
+---
+
+<nav class="sidebar-nav">
+  <header class="sidebar-header">
+    <a href="/" class="logo">
+      <span class="logo-icon">📰</span>
+      <span class="logo-text">赛博周刊</span>
+    </a>
+  </header>
+
+  <div class="nav-list">
+    {issues.map((issue) => (
+      <a
+        href={`/posts/${issue.number}`}
+        class:list={[
+          'nav-item',
+          { active: currentIssue === issue.number }
+        ]}
+        aria-current={currentIssue === issue.number ? 'page' : undefined}
+      >
+        <span class="issue-number">第{issue.number}期</span>
+        <span class="issue-title">- {issue.title}</span>
+      </a>
+    ))}
+  </div>
+</nav>
+
+<style>
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 0;
+  }
+
+  .sidebar-header {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .logo-icon {
+    font-size: 1.5rem;
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  .nav-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 0;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    transition: all 0.15s ease;
+  }
+
+  .nav-item:hover {
+    color: var(--text);
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .nav-item.active {
+    color: var(--accent);
+    background: rgba(196, 30, 58, 0.05);
+    border-right: 3px solid var(--accent);
+  }
+
+  .issue-number {
+    font-weight: 500;
+  }
+
+  .issue-title {
+    opacity: 0.8;
+  }
+</style>
