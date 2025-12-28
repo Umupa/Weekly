@@ -15,6 +15,7 @@ import Masthead from '@components/Masthead.astro';
 import ReadingProgress from '@components/ReadingProgress.astro';
 import KeyboardNav from '@components/KeyboardNav.astro';
 import ImageZoom from '@components/ImageZoom.astro';
+import AsideRight from '@components/AsideRight.astro';
 
 const {
   title,
@@ -79,12 +80,14 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
         )}
       </div>
     </main>
+
+    <!-- 右侧边栏 -->
+    <AsideRight currentDate={date} />
   </div>
 </BaseLayout>
 
 <style>
   .layout {
-    display: flex;
     min-height: 100vh;
   }
 
@@ -101,11 +104,11 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
   }
 
   .main {
-    flex: 1;
     margin-left: var(--sidebar-width);
-    display: flex;
-    justify-content: center;
+    margin-right: var(--aside-width);
     padding: var(--spacing-page);
+    padding-left: clamp(32px, 4vw, 56px);
+    padding-right: clamp(32px, 4vw, 56px);
   }
 
   .main-inner {
@@ -117,57 +120,55 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
     margin-top: 2rem;
   }
 
-  /* 上下篇导航 */
+  /* 上下篇导航 - 报刊风格 */
   .post-nav {
     margin-top: 64px;
-    padding-top: 32px;
-    border-top: 1px dashed var(--border);
+    padding-top: 24px;
+    border-top: 2px solid var(--text);
   }
 
   .post-nav-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
   }
 
   .post-nav-placeholder {
-    /* 占位，保持布局 */
+    flex: 1;
   }
 
   .post-nav-link {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px 24px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
     text-decoration: none;
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    transition: all 0.2s ease;
+    color: var(--text);
+    padding: 8px 0;
+    transition: color 0.15s ease;
   }
 
   .post-nav-link:hover {
-    background: var(--bg);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
+    color: var(--accent);
+  }
+
+  .post-nav-link:hover .post-nav-arrow {
+    color: var(--accent);
   }
 
   .post-nav-link.next {
-    justify-content: flex-end;
     text-align: right;
   }
 
   .post-nav-arrow {
-    font-size: 1.5rem;
-    color: var(--accent);
-    font-weight: 300;
-    flex-shrink: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: color 0.15s ease;
   }
 
   .post-nav-content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    min-width: 0;
+    gap: 2px;
   }
 
   .post-nav-label {
@@ -178,15 +179,17 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
   }
 
   .post-nav-title {
-    font-size: 1rem;
-    color: var(--text);
+    font-size: 0.95rem;
     font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   /* 响应式 */
+  @media (max-width: 1200px) {
+    .main {
+      margin-right: 0;
+    }
+  }
+
   @media (max-width: 768px) {
     .sidebar {
       display: none;
@@ -194,27 +197,23 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
 
     .main {
       margin-left: 0;
-      padding: 16px;
+      margin-right: 0;
+      padding: 20px 16px;
     }
 
     .post-nav {
       margin-top: 48px;
-      padding-top: 24px;
+      padding-top: 20px;
     }
 
     .post-nav-inner {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .post-nav-link {
-      padding: 16px 20px;
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
     }
 
     .post-nav-link.next {
-      justify-content: flex-start;
       text-align: left;
-      flex-direction: row-reverse;
     }
   }
 </style>

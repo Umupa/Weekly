@@ -1,5 +1,4 @@
 ---
-import ThemeSwitch from './ThemeSwitch.astro';
 import { getAllPosts, getIssueNumber } from '@/lib/posts';
 
 interface Props {
@@ -39,10 +38,6 @@ const issues = posts.map((post) => ({
       </a>
     ))}
   </div>
-
-  <footer class="sidebar-footer">
-    <ThemeSwitch />
-  </footer>
 </nav>
 
 <style>
@@ -108,10 +103,5 @@ const issues = posts.map((post) => ({
 
   .issue-title {
     opacity: 0.8;
-  }
-
-  .sidebar-footer {
-    padding: 16px 20px;
-    border-top: 1px solid var(--border);
   }
 </style>

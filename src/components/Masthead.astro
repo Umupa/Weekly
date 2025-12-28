@@ -1,4 +1,6 @@
 ---
+import ArticleTools from './ArticleTools.astro';
+
 interface Props {
   title: string;
   issueNumber: number;
@@ -21,7 +23,10 @@ const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
     <time class="date" datetime={date}>{formattedDate}</time>
   </div>
 
-  <h1 class="title">{title}</h1>
+  <div class="masthead-title-row">
+    <h1 class="title">{title}</h1>
+    <ArticleTools />
+  </div>
 
   <div class="masthead-line"></div>
 </header>
@@ -51,6 +56,12 @@ const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
   .date {
     color: var(--text-secondary);
     font-size: 0.9rem;
+  }
+
+  .masthead-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
   }
 
   .title {

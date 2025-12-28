@@ -1,116 +1,181 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Sidebar from '@components/Sidebar.astro';
+import PostCard from '@components/PostCard.astro';
+import ArticleTools from '@components/ArticleTools.astro';
 import { getAllPosts, getIssueNumber } from '@/lib/posts';
 
 const posts = await getAllPosts();
-const latestPost = posts[0];
-const latestIssueNumber = getIssueNumber(latestPost.id);
 ---
 
 <BaseLayout title="赛博周刊 - 记录每周值得分享的内容">
-  <div class="layout">
-    <!-- 侧边栏 -->
-    <aside class="sidebar">
-      <Sidebar currentIssue={latestIssueNumber} />
-    </aside>
-
-    <!-- 主内容区 -->
-    <main class="main">
-      <div class="hero">
-        <p class="hero-label">最新一期</p>
-        <h1 class="hero-title">第 {latestIssueNumber} 期 - {latestPost.data.title}</h1>
-        <p class="hero-desc">{latestPost.data.description}</p>
-        <a href={`/posts/${latestIssueNumber}`} class="hero-btn">
-          开始阅读 →
+  <header class="header">
+    <nav class="nav-wrapper">
+      <div class="logo">
+        <a href="/">
+          <span class="logo-icon">☕</span>
+          <h1 class="logo-text">赛博周刊</h1>
         </a>
+        <ArticleTools />
       </div>
-    </main>
-  </div>
+      <div class="nav-right">
+        <a href="/about" class="nav-link">关于</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="card-grid">
+      {posts.map((post) => {
+        const issueNumber = getIssueNumber(post.id);
+        return (
+          <PostCard
+            issue={issueNumber}
+            title={post.data.title}
+            date={post.data.date}
+            description={post.data.description}
+            image={post.data.image}
+          />
+        );
+      })}
+    </div>
+  </main>
 </BaseLayout>
 
-<style>
-  .layout {
-    display: flex;
-    min-height: 100vh;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: var(--sidebar-width);
-    height: 100vh;
-    overflow-y: auto;
-    border-right: 1px solid var(--border);
-    background: var(--bg);
-    z-index: 10;
-  }
-
-  .main {
-    flex: 1;
-    margin-left: var(--sidebar-width);
+<style is:global>
+  /* Header */
+  .header {
+    width: 100%;
+    background-color: var(--bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-page);
+    height: 96px;
   }
 
-  .hero {
-    text-align: center;
-    max-width: 600px;
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1338px;
+    padding: 0 16px;
+    margin: 10px 0 5px;
   }
 
-  .hero-label {
-    font-size: 0.9rem;
-    color: var(--accent);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  .hero-title {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin: 0 0 16px;
-  }
-
-  .hero-desc {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    margin-bottom: 32px;
-  }
-
-  .hero-btn {
-    display: inline-block;
-    padding: 12px 32px;
-    background: var(--accent);
-    color: white;
+  .logo a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     text-decoration: none;
-    font-weight: 500;
-    border-radius: 4px;
-    transition: opacity 0.15s ease;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text);
+    transition: all 200ms ease;
+    padding: 8px 4px;
+    margin: -8px -4px;
   }
 
-  .hero-btn:hover {
-    opacity: 0.9;
+  .logo a:hover {
+    color: var(--accent);
   }
 
-  /* 移动端适配 */
+  .logo-icon {
+    font-size: 2.5rem;
+    margin-top: -14px;
+  }
+
+  .logo-text {
+    font: inherit;
+    margin: 0;
+    margin-left: -2px;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: all 200ms ease;
+  }
+
+  .nav-link:hover {
+    opacity: 0.8;
+  }
+
+  /* Main Content */
+  .main-content {
+    width: 100%;
+    max-width: 1338px;
+    margin: -20px auto 48px;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  /* Card Grid - 4 columns by default */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0 16px;
+    margin-right: -20px;
+  }
+
+  /* 3 columns for large screens */
+  @media (max-width: 1412px) {
+    .nav-wrapper,
+    .main-content {
+      max-width: 998px;
+    }
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* 2 columns for tablets */
+  @media (max-width: 1080px) {
+    .nav-wrapper,
+    .main-content {
+      max-width: 659px;
+    }
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+      margin-right: -20px;
+    }
+  }
+
+  /* 1 column for mobile */
   @media (max-width: 768px) {
-    .sidebar {
-      display: none;
+    .header {
+      height: auto;
     }
 
-    .main {
-      margin-left: 0;
-      padding: 16px;
+    .nav-wrapper {
+      margin: 5px 0;
+      padding: 0 12px 0 14px;
     }
 
-    .hero-title {
-      font-size: 1.75rem;
+    .main-content {
+      max-width: 100%;
+      padding: 0 12px;
+      margin-top: 0;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+      max-width: 384px;
+      margin: 0 auto;
     }
   }
 </style>

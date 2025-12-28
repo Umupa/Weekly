@@ -1,0 +1,155 @@
+---
+// TOC 组件 - 文章目录导航
+// 客户端提取标题，滚动高亮当前章节
+---
+
+<nav class="toc" aria-label="文章目录">
+  <header class="toc-header">
+    <span class="toc-title">本期导读</span>
+  </header>
+  <ul class="toc-list" id="toc-list"></ul>
+</nav>
+
+<script>
+  function initTOC() {
+    const article = document.querySelector('article.content');
+    const tocList = document.getElementById('toc-list');
+
+    if (!article || !tocList) return;
+
+    // 提取所有 H2 和 H3 标题
+    const headings = article.querySelectorAll('h2, h3');
+    if (headings.length === 0) {
+      // 没有标题时隐藏整个 TOC
+      const toc = document.querySelector('.toc');
+      if (toc) toc.style.display = 'none';
+      return;
+    }
+
+    // 为每个标题生成 ID（如果没有的话）
+    headings.forEach((heading, index) => {
+      if (!heading.id) {
+        heading.id = `heading-${index}`;
+      }
+    });
+
+    // 生成目录列表
+    const fragment = document.createDocumentFragment();
+    headings.forEach((heading) => {
+      const li = document.createElement('li');
+      li.className = `toc-item toc-${heading.tagName.toLowerCase()}`;
+
+      const a = document.createElement('a');
+      a.href = `#${heading.id}`;
+      a.textContent = heading.textContent || '';
+      a.className = 'toc-link';
+
+      li.appendChild(a);
+      fragment.appendChild(li);
+    });
+    tocList.appendChild(fragment);
+
+    // 使用 Intersection Observer 监听标题进入视口
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          const tocLink = tocList.querySelector(`a[href="#${id}"]`);
+
+          if (entry.isIntersecting) {
+            // 移除所有 active 状态
+            tocList.querySelectorAll('.toc-link').forEach((link) => {
+              link.classList.remove('active');
+            });
+            // 添加当前 active 状态
+            if (tocLink) {
+              tocLink.classList.add('active');
+            }
+          }
+        });
+      },
+      {
+        rootMargin: '-80px 0px -70% 0px',
+        threshold: 0,
+      }
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+
+    // 点击平滑滚动
+    tocList.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'A') {
+        e.preventDefault();
+        const href = target.getAttribute('href');
+        if (href) {
+          const heading = document.querySelector(href);
+          if (heading) {
+            heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // 更新 URL hash
+            history.pushState(null, '', href);
+          }
+        }
+      }
+    });
+  }
+
+  // 页面加载完成后初始化
+  document.addEventListener('DOMContentLoaded', initTOC);
+  // Astro View Transitions 支持
+  document.addEventListener('astro:page-load', initTOC);
+</script>
+
+<style>
+  .toc {
+    font-size: 0.875rem;
+  }
+
+  .toc-header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--text);
+  }
+
+  .toc-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .toc-h3 {
+    padding-left: 1em;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 6px 0;
+    padding-left: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+  }
+
+  .toc-link:hover {
+    color: var(--text);
+  }
+
+  .toc-link.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+</style>
