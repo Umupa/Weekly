@@ -16,6 +16,7 @@ import ReadingProgress from '@components/ReadingProgress.astro';
 import KeyboardNav from '@components/KeyboardNav.astro';
 import ImageZoom from '@components/ImageZoom.astro';
 import AsideRight from '@components/AsideRight.astro';
+import Comment from '@components/Comment.astro';
 
 const {
   title,
@@ -78,6 +79,9 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
             </div>
           </nav>
         )}
+
+        <!-- 评论区 -->
+        <Comment />
       </div>
     </main>
 

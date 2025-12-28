@@ -1,0 +1,97 @@
+---
+/**
+ * Comment.astro - Giscus 评论组件
+ * 基于 GitHub Discussions 的评论系统，使用自定义主题
+ */
+
+// Giscus 配置
+const GISCUS_CONFIG = {
+  repo: 'umupa/Weekly',
+  repoId: 'R_kgDOQvdouA',
+  category: 'Announcements',
+  categoryId: 'DIC_kwDOQvdouM4C0T__',
+  mapping: 'pathname',
+  strict: '0',
+  reactionsEnabled: '1',
+  emitMetadata: '0',
+  inputPosition: 'bottom',
+  lang: 'zh-CN',
+  loading: 'lazy',
+};
+---
+
+<div class="giscus-wrapper" id="giscus-container"></div>
+
+<script define:vars={{ GISCUS_CONFIG }}>
+  // 获取主题
+  function getTheme() {
+    const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    // 开发环境用内置主题，生产环境用自定义 CSS
+    if (isDev) {
+      return 'light';
+    }
+    return `${window.location.origin}/giscus-theme.css`;
+  }
+
+  // 加载 Giscus
+  function loadGiscus() {
+    const container = document.getElementById('giscus-container');
+    if (!container) return;
+
+    // 避免重复加载
+    if (container.querySelector('script')) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', GISCUS_CONFIG.repo);
+    script.setAttribute('data-repo-id', GISCUS_CONFIG.repoId);
+    script.setAttribute('data-category', GISCUS_CONFIG.category);
+    script.setAttribute('data-category-id', GISCUS_CONFIG.categoryId);
+    script.setAttribute('data-mapping', GISCUS_CONFIG.mapping);
+    script.setAttribute('data-strict', GISCUS_CONFIG.strict);
+    script.setAttribute('data-reactions-enabled', GISCUS_CONFIG.reactionsEnabled);
+    script.setAttribute('data-emit-metadata', GISCUS_CONFIG.emitMetadata);
+    script.setAttribute('data-input-position', GISCUS_CONFIG.inputPosition);
+    script.setAttribute('data-theme', getTheme());
+    script.setAttribute('data-lang', GISCUS_CONFIG.lang);
+    script.setAttribute('data-loading', GISCUS_CONFIG.loading);
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  // 初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadGiscus);
+  } else {
+    loadGiscus();
+  }
+
+  // Astro View Transitions 支持
+  document.addEventListener('astro:page-load', loadGiscus);
+</script>
+
+<style>
+  .giscus-wrapper {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .giscus-wrapper :global(.giscus) {
+    max-width: 100%;
+  }
+
+  .giscus-wrapper :global(.giscus-frame) {
+    width: 100%;
+    border: none;
+  }
+
+  @media (max-width: 768px) {
+    .giscus-wrapper {
+      margin-top: 32px;
+      padding-top: 24px;
+    }
+  }
+</style>
