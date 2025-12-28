@@ -28,15 +28,15 @@ main {
   --color-btn-hover-bg: #f0f0f0;
   --color-btn-hover-border: #d0d0d0;
 
-  /* 主按钮 - 淡粉色风格 */
+  /* 主按钮 - 柔和灰色风格 */
   --color-btn-primary-text: #1a1a1a;
-  --color-btn-primary-bg: #fdf2f4;
-  --color-btn-primary-border: #f5d5da;
-  --color-btn-primary-hover-bg: #fce7eb;
-  --color-btn-primary-hover-border: #f0c4cc;
+  --color-btn-primary-bg: #f9f9f9;
+  --color-btn-primary-border: #e5e5e5;
+  --color-btn-primary-hover-bg: #f0f0f0;
+  --color-btn-primary-hover-border: #d0d0d0;
   --color-btn-primary-disabled-text: #999999;
-  --color-btn-primary-disabled-bg: #fdf8f9;
-  --color-btn-primary-disabled-border: #f5e5e8;
+  --color-btn-primary-disabled-bg: #fafafa;
+  --color-btn-primary-disabled-border: #e8e8e8;
 
   /* 功能色 */
   --color-success-fg: #1a7f37;
