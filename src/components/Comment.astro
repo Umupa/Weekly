@@ -23,15 +23,8 @@ const GISCUS_CONFIG = {
 <div class="giscus-wrapper" id="giscus-container"></div>
 
 <script define:vars={{ GISCUS_CONFIG }}>
-  // 获取主题
-  function getTheme() {
-    const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    // 开发环境用内置主题，生产环境用自定义 CSS
-    if (isDev) {
-      return 'light';
-    }
-    return `${window.location.origin}/giscus-theme.css`;
-  }
+  // 使用 jsDelivr CDN 托管的自定义主题
+  const THEME_URL = 'https://cdn.jsdelivr.net/gh/umupa/Weekly@main/public/giscus-theme.css';
 
   // 加载 Giscus
   function loadGiscus() {
@@ -52,7 +45,7 @@ const GISCUS_CONFIG = {
     script.setAttribute('data-reactions-enabled', GISCUS_CONFIG.reactionsEnabled);
     script.setAttribute('data-emit-metadata', GISCUS_CONFIG.emitMetadata);
     script.setAttribute('data-input-position', GISCUS_CONFIG.inputPosition);
-    script.setAttribute('data-theme', getTheme());
+    script.setAttribute('data-theme', THEME_URL);
     script.setAttribute('data-lang', GISCUS_CONFIG.lang);
     script.setAttribute('data-loading', GISCUS_CONFIG.loading);
     script.setAttribute('crossorigin', 'anonymous');
