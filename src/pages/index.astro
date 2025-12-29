@@ -7,13 +7,15 @@ import { getAllPosts, getIssueNumber } from '@/lib/posts';
 const posts = await getAllPosts();
 ---
 
-<BaseLayout title="赛博周刊 - 记录每周值得分享的内容">
+<BaseLayout title="史莱姆周刊 - 缓慢但从未停止">
   <header class="header">
     <nav class="nav-wrapper">
       <div class="logo">
         <a href="/">
-          <span class="logo-icon">☕</span>
-          <h1 class="logo-text">赛博周刊</h1>
+          <img src="/icon.svg" alt="史莱姆" class="logo-icon" />
+          <h1 class="logo-text">史莱姆周刊</h1>
+          <span class="logo-divider">·</span>
+          <span class="logo-slogan">一只史莱姆的生活记录，缓慢但从未停止</span>
         </a>
         <ArticleTools />
       </div>
@@ -87,14 +89,29 @@ const posts = await getAllPosts();
   }
 
   .logo-icon {
-    font-size: 2.5rem;
-    margin-top: -14px;
+    width: 52px;
+    height: auto;
   }
 
   .logo-text {
     font: inherit;
     margin: 0;
     margin-left: -2px;
+  }
+
+  .logo-divider {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin: 0 4px;
+    opacity: 0.5;
+  }
+
+  .logo-slogan {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    font-family: 'LXGW WenKai', serif;
+    letter-spacing: 0.05em;
   }
 
   .nav-right {

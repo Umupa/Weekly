@@ -18,8 +18,8 @@ const issues = posts.map((post) => ({
 <nav class="sidebar-nav">
   <header class="sidebar-header">
     <a href="/" class="logo">
-      <span class="logo-icon">📰</span>
-      <span class="logo-text">赛博周刊</span>
+      <img src="/icon.svg" alt="史莱姆" class="logo-icon" />
+      <span class="logo-text">史莱姆周刊</span>
     </a>
   </header>
 
@@ -56,17 +56,18 @@ const issues = posts.map((post) => ({
   .logo {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     text-decoration: none;
     color: var(--text);
   }
 
   .logo-icon {
-    font-size: 1.5rem;
+    width: 52px;
+    height: auto;
   }
 
   .logo-text {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 700;
     font-family: 'Noto Serif SC', serif;
   }
