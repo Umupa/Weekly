@@ -1,9 +1,9 @@
 ---
 // TOC 组件 - 文章目录导航
-// 客户端提取标题，滚动高亮当前章节
+// Sticky 定位，在文章右侧浮动显示
 ---
 
-<nav class="toc" aria-label="文章目录">
+<nav class="toc" aria-label="文章目录" id="toc-nav">
   <header class="toc-header">
     <span class="toc-title">本期导读</span>
   </header>
@@ -14,17 +14,20 @@
   function initTOC() {
     const article = document.querySelector('article.content');
     const tocList = document.getElementById('toc-list');
+    const tocNav = document.getElementById('toc-nav');
 
-    if (!article || !tocList) return;
+    if (!article || !tocList || !tocNav) return;
 
     // 提取所有 H2 和 H3 标题
     const headings = article.querySelectorAll('h2, h3');
     if (headings.length === 0) {
       // 没有标题时隐藏整个 TOC
-      const toc = document.querySelector('.toc');
-      if (toc) toc.style.display = 'none';
+      tocNav.style.display = 'none';
       return;
     }
+
+    // 显示 TOC
+    tocNav.style.display = 'block';
 
     // 为每个标题生成 ID（如果没有的话）
     headings.forEach((heading, index) => {
@@ -33,7 +36,8 @@
       }
     });
 
-    // 生成目录列表
+    // 清空并生成目录列表
+    tocList.innerHTML = '';
     const fragment = document.createDocumentFragment();
     headings.forEach((heading) => {
       const li = document.createElement('li');
@@ -102,20 +106,26 @@
 
 <style>
   .toc {
-    font-size: 0.875rem;
+    display: none;
+    position: sticky;
+    top: 32px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    font-size: 0.85rem;
+    padding-left: 24px;
+    border-left: 1px solid var(--border);
   }
 
   .toc-header {
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--text);
+    margin-bottom: 12px;
   }
 
   .toc-title {
     font-family: 'Noto Serif SC', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
   }
 
   .toc-list {
@@ -126,7 +136,7 @@
 
   .toc-item {
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   .toc-h3 {
@@ -135,21 +145,28 @@
 
   .toc-link {
     display: block;
-    padding: 6px 0;
-    padding-left: 12px;
+    padding: 4px 0;
     color: var(--text-secondary);
     text-decoration: none;
-    border-left: 2px solid transparent;
-    transition: all 0.15s ease;
+    transition: color 0.15s ease;
+    opacity: 0.8;
   }
 
   .toc-link:hover {
     color: var(--text);
+    opacity: 1;
   }
 
   .toc-link.active {
     color: var(--accent);
-    border-left-color: var(--accent);
     font-weight: 500;
+    opacity: 1;
+  }
+
+  /* 宽屏才显示 TOC */
+  @media (min-width: 1200px) {
+    .toc {
+      display: block;
+    }
   }
 </style>

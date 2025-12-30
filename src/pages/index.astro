@@ -20,7 +20,9 @@ const posts = await getAllPosts();
         <ArticleTools />
       </div>
       <div class="nav-right">
-        <a href="/about" class="nav-link">关于</a>
+        <a href="https://umupa.fun" class="nav-link" target="_blank" rel="noopener">博客</a>
+        <a href="/posts/1" class="nav-link">关于</a>
+        <a href="https://github.com/Umupa" class="nav-link" target="_blank" rel="noopener">GitHub</a>
       </div>
     </nav>
   </header>
@@ -121,15 +123,19 @@ const posts = await getAllPosts();
   }
 
   .nav-link {
-    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    color: var(--text-secondary);
     text-decoration: none;
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 18px;
+    font-weight: 600;
     transition: all 200ms ease;
   }
 
   .nav-link:hover {
-    opacity: 0.8;
+    color: var(--text);
+    text-decoration: underline;
   }
 
   /* Main Content */

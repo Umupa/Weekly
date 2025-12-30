@@ -12,10 +12,9 @@ interface Props {
 import BaseLayout from './BaseLayout.astro';
 import Sidebar from '@components/Sidebar.astro';
 import Masthead from '@components/Masthead.astro';
-import ReadingProgress from '@components/ReadingProgress.astro';
 import KeyboardNav from '@components/KeyboardNav.astro';
 import ImageZoom from '@components/ImageZoom.astro';
-import AsideRight from '@components/AsideRight.astro';
+import TableOfContents from '@components/TableOfContents.astro';
 import Comment from '@components/Comment.astro';
 
 const {
@@ -34,7 +33,6 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
 ---
 
 <BaseLayout title={pageTitle} description={description} image={image}>
-  <ReadingProgress />
   <KeyboardNav prevUrl={prevUrl} nextUrl={nextUrl} />
   <ImageZoom />
 
@@ -46,47 +44,52 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
 
     <!-- 主内容区 -->
     <main class="main">
-      <div class="main-inner">
-        <Masthead title={title} issueNumber={issueNumber} date={date} />
+      <div class="main-wrapper">
+        <!-- 文章内容 -->
+        <div class="main-content">
+          <Masthead title={title} issueNumber={issueNumber} date={date} />
 
-        <article class="content prose">
-          <slot />
-        </article>
+          <article class="content prose">
+            <slot />
+          </article>
 
-        <!-- 上下篇导航 -->
-        {(prevPost || nextPost) && (
-          <nav class="post-nav">
-            <div class="post-nav-inner">
-              {prevPost ? (
-                <a href={`/posts/${prevPost.number}`} class="post-nav-link prev">
-                  <span class="post-nav-arrow">←</span>
-                  <div class="post-nav-content">
-                    <span class="post-nav-label">上一期</span>
-                    <span class="post-nav-title">{prevPost.title}</span>
-                  </div>
-                </a>
-              ) : <div class="post-nav-placeholder" />}
+          <!-- 上下篇导航 -->
+          {(prevPost || nextPost) && (
+            <nav class="post-nav">
+              <div class="post-nav-inner">
+                {prevPost ? (
+                  <a href={`/posts/${prevPost.number}`} class="post-nav-link prev">
+                    <span class="post-nav-arrow">←</span>
+                    <div class="post-nav-content">
+                      <span class="post-nav-label">上一期</span>
+                      <span class="post-nav-title">{prevPost.title}</span>
+                    </div>
+                  </a>
+                ) : <div class="post-nav-placeholder" />}
 
-              {nextPost ? (
-                <a href={`/posts/${nextPost.number}`} class="post-nav-link next">
-                  <div class="post-nav-content">
-                    <span class="post-nav-label">下一期</span>
-                    <span class="post-nav-title">{nextPost.title}</span>
-                  </div>
-                  <span class="post-nav-arrow">→</span>
-                </a>
-              ) : <div class="post-nav-placeholder" />}
-            </div>
-          </nav>
-        )}
+                {nextPost ? (
+                  <a href={`/posts/${nextPost.number}`} class="post-nav-link next">
+                    <div class="post-nav-content">
+                      <span class="post-nav-label">下一期</span>
+                      <span class="post-nav-title">{nextPost.title}</span>
+                    </div>
+                    <span class="post-nav-arrow">→</span>
+                  </a>
+                ) : <div class="post-nav-placeholder" />}
+              </div>
+            </nav>
+          )}
 
-        <!-- 评论区 -->
-        <Comment />
+          <!-- 评论区 -->
+          <Comment />
+        </div>
+
+        <!-- 右侧 TOC -->
+        <aside class="toc-aside">
+          <TableOfContents />
+        </aside>
       </div>
     </main>
-
-    <!-- 右侧边栏 -->
-    <AsideRight currentDate={date} />
   </div>
 </BaseLayout>
 
@@ -109,15 +112,27 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
 
   .main {
     margin-left: var(--sidebar-width);
-    margin-right: var(--aside-width);
     padding: var(--spacing-page);
     padding-left: clamp(32px, 4vw, 56px);
     padding-right: clamp(32px, 4vw, 56px);
   }
 
-  .main-inner {
-    width: 100%;
+  .main-wrapper {
+    display: flex;
+    gap: 48px;
+    max-width: calc(var(--content-max-width) + 200px);
+  }
+
+  .main-content {
+    flex: 1;
+    min-width: 0;
     max-width: var(--content-max-width);
+  }
+
+  .toc-aside {
+    flex-shrink: 0;
+    width: 180px;
+    padding-top: 120px;
   }
 
   .content {
@@ -187,10 +202,14 @@ const nextUrl = nextPost ? `/posts/${nextPost.number}` : undefined;
     font-weight: 500;
   }
 
-  /* 响应式 */
+  /* 响应式 - 隐藏 TOC */
   @media (max-width: 1200px) {
-    .main {
-      margin-right: 0;
+    .toc-aside {
+      display: none;
+    }
+
+    .main-wrapper {
+      max-width: var(--content-max-width);
     }
   }
 

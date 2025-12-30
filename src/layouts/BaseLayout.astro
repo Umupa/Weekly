@@ -28,8 +28,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <script is:inline>
       (function() {
         const stored = localStorage.getItem('theme');
-        const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', stored || system);
+        document.documentElement.setAttribute('data-theme', stored || 'light');
       })();
     </script>
 
@@ -69,8 +68,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <style is:global>
   :root {
     --sidebar-width: 280px;
-    --aside-width: 240px;
-    --content-max-width: 720px;
+    --content-max-width: 800px;
     --spacing-page: 24px;
   }
 
