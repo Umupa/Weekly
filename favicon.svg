@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- 简化版史莱姆 favicon - 针对小尺寸优化 -->
+  <!-- 身体 - 简单圆润形状 -->
+  <circle cx="16" cy="18" r="13" fill="#333"/>
+  <!-- 头顶小突起 -->
+  <circle cx="16" cy="5" r="3" fill="#333"/>
+  <!-- 左眼 -->
+  <circle cx="11" cy="17" r="3.5" fill="#fff"/>
+  <!-- 右眼 -->
+  <circle cx="21" cy="17" r="3.5" fill="#fff"/>
+</svg>

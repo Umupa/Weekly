@@ -1,0 +1,312 @@
+/*!
+ * 史莱姆周刊 Giscus 自定义主题 - 暗色
+ */
+
+main {
+  /* 颜色系统 */
+  --color-fg-default: #e5e5e5;
+  --color-fg-muted: #999999;
+  --color-fg-subtle: #666666;
+  --color-canvas-default: #1a1a1a;
+  --color-canvas-overlay: #1a1a1a;
+  --color-canvas-inset: #242424;
+  --color-canvas-subtle: #242424;
+  --color-border-default: #333333;
+  --color-border-muted: #333333;
+  --color-neutral-muted: rgba(255, 255, 255, 0.05);
+
+  /* 强调色 */
+  --color-accent-fg: #e85d75;
+  --color-accent-emphasis: #e85d75;
+  --color-accent-muted: rgba(232, 93, 117, 0.15);
+  --color-accent-subtle: rgba(232, 93, 117, 0.08);
+
+  /* 按钮颜色 - 柔和风格 */
+  --color-btn-text: #e5e5e5;
+  --color-btn-bg: #242424;
+  --color-btn-border: #333333;
+  --color-btn-hover-bg: #2a2a2a;
+  --color-btn-hover-border: #444444;
+
+  /* 主按钮 - 使用柔和的深灰色 */
+  --color-btn-primary-text: #e5e5e5;
+  --color-btn-primary-bg: #333333;
+  --color-btn-primary-border: #444444;
+  --color-btn-primary-hover-bg: #404040;
+  --color-btn-primary-hover-border: #555555;
+  --color-btn-primary-disabled-text: #666666;
+  --color-btn-primary-disabled-bg: #242424;
+  --color-btn-primary-disabled-border: #333333;
+
+  /* 功能色 */
+  --color-success-fg: #3fb950;
+  --color-attention-fg: #d29922;
+  --color-danger-fg: #f85149;
+
+  /* 字体 */
+  font-family: 'LXGW WenKai', 'Noto Serif SC', 'Source Han Serif SC', serif;
+  letter-spacing: 0.03em;
+}
+
+/* 隐藏原始反应计数文本 */
+.gsc-reactions-count {
+  display: none !important;
+}
+
+/* 反应按钮组居中 */
+.gsc-reactions-buttons {
+  justify-content: center !important;
+}
+
+/* 反应按钮样式 */
+.gsc-social-reaction-summary-item {
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--color-border-default) !important;
+  background: var(--color-canvas-default) !important;
+  font-size: 0.875rem !important;
+  transition: all 0.15s ease !important;
+}
+
+.gsc-social-reaction-summary-item:hover {
+  border-color: var(--color-accent-fg) !important;
+  background: var(--color-accent-subtle) !important;
+}
+
+.gsc-social-reaction-summary-item.has-reacted {
+  border-color: var(--color-accent-fg) !important;
+  background: var(--color-accent-muted) !important;
+}
+
+/* 评论数标题 */
+.gsc-comments-count {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-fg-default);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-default);
+  margin-bottom: 16px;
+}
+
+/* 评论卡片 */
+.gsc-comment {
+  border: 1px solid var(--color-border-default) !important;
+  border-radius: 8px !important;
+  margin-bottom: 16px !important;
+  background: var(--color-canvas-default) !important;
+  box-shadow: none !important;
+}
+
+.gsc-comment-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--color-border-muted) !important;
+  padding: 12px 16px !important;
+}
+
+.gsc-comment-author-avatar {
+  border-radius: 50% !important;
+}
+
+.gsc-comment-author > a {
+  font-weight: 600 !important;
+  color: var(--color-fg-default) !important;
+}
+
+.gsc-comment-edited,
+.gsc-comment-author > time {
+  color: var(--color-fg-muted) !important;
+  font-size: 0.85rem !important;
+}
+
+.gsc-comment-content {
+  padding: 16px !important;
+  font-size: 1rem !important;
+  line-height: 1.75 !important;
+  color: var(--color-fg-default) !important;
+}
+
+.gsc-comment-content p {
+  margin-bottom: 0.75em !important;
+}
+
+.gsc-comment-content p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.gsc-comment-footer {
+  padding: 8px 16px !important;
+  border-top: 1px solid var(--color-border-muted) !important;
+  background: var(--color-canvas-subtle) !important;
+}
+
+.gsc-reply-link {
+  color: var(--color-fg-muted) !important;
+  font-size: 0.85rem !important;
+  transition: color 0.15s ease !important;
+}
+
+.gsc-reply-link:hover {
+  color: var(--color-accent-fg) !important;
+}
+
+/* 评论输入框 */
+.gsc-comment-box {
+  border: 1px solid var(--color-border-default) !important;
+  border-radius: 8px !important;
+  background: var(--color-canvas-default) !important;
+  box-shadow: none !important;
+}
+
+.gsc-comment-box-tabs {
+  background: var(--color-canvas-subtle) !important;
+  border-bottom: 1px solid var(--color-border-default) !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.gsc-comment-box-tab {
+  font-size: 0.9rem !important;
+  padding: 8px 16px !important;
+  color: var(--color-fg-muted) !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.gsc-comment-box-tab:hover {
+  color: var(--color-fg-default) !important;
+}
+
+.gsc-comment-box-tab[aria-selected="true"] {
+  color: var(--color-fg-default) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--color-accent-fg) !important;
+}
+
+.gsc-comment-box-textarea {
+  border: 1px solid var(--color-border-default) !important;
+  border-radius: 4px !important;
+  padding: 12px !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  background: var(--color-canvas-subtle) !important;
+  color: var(--color-fg-default) !important;
+  resize: vertical !important;
+  min-height: 100px !important;
+}
+
+.gsc-comment-box-textarea:focus {
+  border-color: var(--color-accent-fg) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--color-accent-subtle) !important;
+}
+
+.gsc-comment-box-textarea::placeholder {
+  color: var(--color-fg-subtle) !important;
+}
+
+.gsc-comment-box-bottom {
+  padding: 12px 16px !important;
+  background: var(--color-canvas-subtle) !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+/* 登录/提交按钮 - 柔和风格 */
+.gsc-comment-box-bottom a[href*="github"],
+.gsc-comment-box-submit {
+  background: var(--color-btn-primary-bg) !important;
+  color: var(--color-btn-primary-text) !important;
+  border: 1px solid var(--color-btn-primary-border) !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  transition: all 0.15s ease !important;
+}
+
+.gsc-comment-box-bottom a[href*="github"]:hover,
+.gsc-comment-box-submit:hover:not(:disabled) {
+  background: var(--color-btn-primary-hover-bg) !important;
+  border-color: var(--color-btn-primary-hover-border) !important;
+}
+
+.gsc-comment-box-submit:disabled {
+  background: var(--color-btn-primary-disabled-bg) !important;
+  color: var(--color-btn-primary-disabled-text) !important;
+  border-color: var(--color-btn-primary-disabled-border) !important;
+  cursor: not-allowed !important;
+}
+
+/* 回复区域 */
+.gsc-replies {
+  border-left: 2px solid var(--color-border-default) !important;
+  margin-left: 24px !important;
+  padding-left: 16px !important;
+}
+
+.gsc-reply {
+  border: none !important;
+  border-bottom: 1px solid var(--color-border-muted) !important;
+  padding: 12px 0 !important;
+}
+
+.gsc-reply:last-child {
+  border-bottom: none !important;
+}
+
+/* 加载状态 */
+.gsc-loading {
+  padding: 32px !important;
+  text-align: center !important;
+  color: var(--color-fg-muted) !important;
+}
+
+/* 链接样式 */
+.gsc-comment-content a {
+  color: var(--color-accent-fg) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  transition: border-color 0.15s ease !important;
+}
+
+.gsc-comment-content a:hover {
+  border-bottom-color: var(--color-accent-fg) !important;
+}
+
+/* 代码块 */
+.gsc-comment-content code {
+  background: var(--color-canvas-subtle) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.9em !important;
+}
+
+.gsc-comment-content pre {
+  background: #0d0d0d !important;
+  color: #e5e5e5 !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  overflow-x: auto !important;
+}
+
+.gsc-comment-content pre code {
+  background: transparent !important;
+  padding: 0 !important;
+  color: inherit !important;
+}
+
+/* 作者标签 */
+.gsc-comment-author-badge {
+  background: var(--color-canvas-subtle) !important;
+  color: var(--color-fg-muted) !important;
+  border: 1px solid var(--color-border-default) !important;
+  border-radius: 4px !important;
+  padding: 2px 8px !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+
+/* 隐藏 footer */
+.gsc-footer {
+  display: none !important;
+}
